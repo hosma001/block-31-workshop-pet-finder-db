@@ -1,7 +1,10 @@
 const pg = require('pg');
 const client = new pg.Client('postgres://localhost/B31W_pet_finder_db');
+const cors = require('cors');
 const express = require('express');
 const app = express();
+
+app.use(cors());
 
 app.get('/api/v1/pets', async(req, res, next)=> {
     try {
@@ -23,18 +26,19 @@ const setup = async()=> {
         DROP TABLE IF EXISTS pets;
         CREATE TABLE pets(
             id SERIAL PRIMARY KEY,
-            name VARCHAR(20)
+            name VARCHAR(20),
+            is_favorite BOOLEAN
         );
-        INSERT INTO pets (name) VALUES ('Bella');
-        INSERT INTO pets (name) VALUES ('Max');
-        INSERT INTO pets (name) VALUES ('Charlie');
-        INSERT INTO pets (name) VALUES ('Daisy');
-        INSERT INTO pets (name) VALUES ('Rocky');
-        INSERT INTO pets (name) VALUES ('Lucy');
-        INSERT INTO pets (name) VALUES ('Buddy');
-        INSERT INTO pets (name) VALUES ('Coco');
-        INSERT INTO pets (name) VALUES ('Oliver');
-        INSERT INTO pets (name) VALUES ('Luna');
+        INSERT INTO pets (name, is_favorite) VALUES ('Bella', true);
+        INSERT INTO pets (name, is_favorite) VALUES ('Max', false);
+        INSERT INTO pets (name, is_favorite) VALUES ('Charlie', true);
+        INSERT INTO pets (name, is_favorite) VALUES ('Daisy', false);
+        INSERT INTO pets (name, is_favorite) VALUES ('Rocky', false);
+        INSERT INTO pets (name, is_favorite) VALUES ('Lucy', false);
+        INSERT INTO pets (name, is_favorite) VALUES ('Buddy', false);
+        INSERT INTO pets (name, is_favorite) VALUES ('Coco', true);
+        INSERT INTO pets (name, is_favorite) VALUES ('Oliver', true);
+        INSERT INTO pets (name, is_favorite) VALUES ('Luna', false);
     `;
     await client.query(SQL);
     console.log('tables created and data seeded!');
